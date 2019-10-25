@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block table_block %}
+<div class="aboutContainer">
+	<fieldset>
+		<legend>系统简介</legend>
+		<div class="introduction">
+    		<h5>系统简介</h5>
+    		<span>
+    			个人单词管理系统是一个个人开发的、基于测试的英语词汇在线学习平台，开发人员开发的基于互联网云计算技术的 个性化数据库由数据库管理员（开发人员）添加数据的学习系统，本系统暂时通过系统推荐的由常用的英文单词组成的英文写作，你可以通过收藏、标记等方式，激发你的记忆潜能，从而提高记忆效果。经过我们的实验测试，它能有效提高学生记忆单词的效率10倍以上； 能让熟悉键盘操作的小学生在20小时的有效时间内记牢小学3-6难度低的英文写作的重要单词，初中生在30小时的有效时间内牢记3-6难度较低的英文写作的重要单词，高中生则可以在40小时的有效时间内牢记3-6难度中等的英文写作的重要单词
+    		</span>
+	    </div>
+	    <div class="function">
+	    	<h5>系统功能</h5>
+	    	<span>1、主页：用户可以选中单词以便收藏、标记，并填写一些单词的相关信息，系统会自动保存，在界面上也会做出统计图</span><br>
+	    	<span>2、管理：系统由单词管理、分组管理、反馈管理三部分组成。单词管理的都是自己收藏和标记的单词，分组管理的对这些单词分组，反馈管理是用户在使用的过程中可以输入相关意见提交给后台</span><br>
+	    	<span>3、设置：系统设立了基本设置、安全设置、消息设置。基本设置是设置用户的基本信息，安全设置是设置用户的密码（回显字符）和用户的邮箱（部分回显字符），消息设置设置消息的显示</span>
+	    </div>
+	</fieldset>
+
+	<fieldset>
+		<legend>系统声明</legend>
+		<div class="claim">
+			<div class="logo">
+				<img src="{{ url_for("static", filename="images/about/word.png") }}" alt="">
+			</div>
+			<div class="introduction">
+				<div style="margin-top:10px;">
+				  <span class="bold">myword</span>
+				  <br>
+				  <span>记单词小工具</span>
+				</div>
+				<div>
+				  <span class="bold">当前版本：</span>
+				  <br>
+				  <span>myword2.0</span>
+				</div>
+				<div>
+				  <span class="bold">更新：</span>
+				  <br>
+				  <ul>
+				    <li>添加用户XXX功能</li>
+				    <li>添加XXX功能</li>
+				    <li>添加XXX功能</li>
+				  </ul>
+				</div>
+				<div>
+				  <span class="bold">制作：</span><span>呱唧_T_呱唧</span><br>
+				  <span class="bold">问题联系：</span><span>599663430@qq.com</span>
+				</div>
+				<div style="margin-top:90px; color: #ccc;">
+				    <span>DREAM个人工作室@HXS</span>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+</div>
+{% endblock %}

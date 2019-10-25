@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>后台登陆</title>
+	<link rel="stylesheet" href="{{ url_for("static", filename="css/admin/login.css") }}">
+    <script src="{{ url_for("static", filename="js/jquery-3.4.1.min.js") }}"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<span>MY WORD</span>
+		</div>
+		<div class="content">
+			<div class="left">
+				<img style="height: 600px;" src="{{ url_for("static", filename="images/admin/u179.jpg") }}" alt="图片正在赶来的路上...">
+			</div>
+			<div class="right">
+				<div class="top">
+					<div class="transform" style="margin-right: 50px;"><a style="color:inherit;" href="">管理员登录</a></div>
+				</div>
+				<div class="center">
+                    {% if get_flashed_messages() %}
+                        <p class="flash" style="text-align: center; width: 80%; color: red;">
+                            {% for get_flashed_message in get_flashed_messages() %}
+                                {{ get_flashed_message }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+					<form action="{{ url_for("cms_login.cms_login") }}" method="POST">
+                        {{ form.csrf_token }}
+                        {{ form.user_name(class="input", placeholder="请输入用户名") }}
+						<br>
+                        {{ form.user_psd(class="input", placeholder="请输入密码") }}
+						<br>
+                        {{ form.remember_btn(style="margin-top:20px;") }}
+						<span style="float: right; margin-right: 15%;margin-top:20px;"><a href="" style="color: #0099ff;">忘记密码</a></span><br>
+                        {{ form.login_btn(class="input") }}
+					</form>
+				</div>
+				<div class="bottom">
+					<div style="margin-top:50px;">
+						<a href="">帮助</a>
+						<a href="">隐私</a>
+						<a href="">条款</a><br>
+						<span>copyright&copy;呱唧_T_呱唧</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script>
+        $(function(){
+            $("html").on("click", function(){
+                $(".flash").slideUp(10);
+            })
+        })
+    </script>
+</body>
+</html>

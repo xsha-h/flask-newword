@@ -1,0 +1,88 @@
+.mainContainer{
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+/*内容区上部*/
+.mainLeft{
+	height: 100%;
+	flex: 5;
+	padding: 5px;
+}
+.words{
+	width: 100%;
+	height: 56%;
+	border-top: 3px solid #07bff7;
+	background-color: white;
+	margin-bottom: 4%;
+	position: relative;
+	overflow: scroll;
+}
+
+.words>img{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+.rank{
+	width: 100%;
+	height: 40%;
+	border-top: 3px solid #07bff7;
+	display: flex;
+	flex-direction: row;
+	/*padding: 5px;*/
+}
+.transform{
+	flex: 1;
+	text-align: center;
+	margin-right: 5px;
+	border-right: 1px solid #ccc;
+	background-color: white;
+}.transform>*{
+	margin-top: 10px;
+}
+.transform>img{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.chart_changed{
+	flex: 4;
+}
+
+/*内容区下部*/
+.mainRight{
+	height: 100%;
+	flex: 6;
+	padding: 5px;
+}
+.mainRight>div{
+	width: 100%;
+	height: 49%;
+	margin-bottom: 1%;
+	border-top: 3px solid #07bff7;
+	display: flex;
+	flex-direction: row;
+}
+.datas{
+	margin-top: 5%;
+	text-align: center;
+	width: 100%;
+	height: 75%;
+	background-color: white;
+}
+.datas>tr{
+	border-bottom: 1px solid rgba(0,0,0,1);
+}
+.datas th, .datas td{
+	text-align: center;
+	line-height: 100%;
+}
+.datas img{
+	width: 15px;
+	height: 15px;
+}

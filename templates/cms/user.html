@@ -1,0 +1,259 @@
+<!-- 导入用户管理的外部文件 -->
+{% extends "cms/base.html" %}
+
+{% block table_block %}
+<div class="right">
+  <div class="search">
+    <div class="settings">
+          <span class="title">个人单词后台管理</span>
+      <img style="margin-right:80px;" src="{{ url_for("static", filename="images/admin/down.png") }}" alt="">
+      <img style="border-radius:50%; width: 30px; height: 30px;" src="{{ url_for("static", filename="images/admin/avatar.jpg") }}" alt="">
+        <span class="welcome">欢迎！管理员</span>
+      <div>
+        <ul>
+            <a href="#"><li>用户管理</li></a>
+            <a href="{{ url_for("cms_feedback.cms_feedback") }}"><li>反馈管理</li></a>
+            <a href="{{ url_for("cms_login.logout") }}"><li>退出登录</li></a>
+        </ul>
+      </div>
+    </div>
+    <div class="management">
+      <form style="float: left; margin-top: 5px;" action="{{ url_for("cms_user.cms_user") }}" method="post">
+        <label for="search">搜索：</label>
+        <input id="search" name="keyword" type="text" placeholder="请输入关键字">
+        <input type="submit" value="查询">
+      </form>
+      <!-- <button data-toggle="modal" data-target="#myModal" style="float:left; margin-top:46px;">添加</button> -->
+    </div>
+  </div>
+  <div class="dataShow">
+    <table class="table table-hover">
+      <tr>
+          <th>序号</th>
+          <th>账户</th>
+          <th>邮箱</th>
+          <th>其他联系方式</th>
+          <th>账户状态</th>
+          <th>操作</th>
+      </tr>
+      {% for user in users %}
+      <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.user_name }}</td>
+          <td>{{ user.user_email }}</td>
+          <td>{{ user.user_phone | set_default }}</td>
+          <td>{{ user.user_active | bool_to_str("活跃", "冻结") }}</td>
+          <td class="button">
+              <button data-toggle="modal" data-target="#myModal_reset" class="reset" onclick="reset_password({{ user.id }})">重置密码</button>
+              <button data-toggle="modal" data-target=".bs-example-modal-lg" class="check" onclick="check_user({{ user.id }})">查看</button>
+              {% if user.user_active %}
+              <button data-toggle="modal" data-target="#myModal_freeze"
+                      class="freeze" onclick="set_active({{ user.id }})">冻结</button>
+              {% else %}
+              <button data-toggle="modal" data-target="#myModal_freeze"
+                      class="freeze" style="background-color: #2e6da4;" onclick="set_active({{ user.id }})">激活</button>
+              {% endif %}
+          </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div class="myPage">
+    <!-- 分页管理 -->
+    <nav aria-label="..." style="float:right; margin-right: 50px;">
+      <ul class="pagination">
+        {% if pagination.has_prev %}
+        <li>
+          <span>
+            <span aria-hidden="true"><a href="{{ url_for("cms_user.cms_user", page=pagination.page-1) }}">&laquo;</a></span>
+          </span>
+        </li>
+        {% else %}
+          <li class="disabled">
+          <span>
+            <span aria-hidden="true">&laquo;</span>
+          </span>
+        </li>
+        {% endif %}
+        {% for page in pagination.iter_pages(1, 1, 3, 1) %}
+            {% if page != pagination.page %}
+            <li>
+              <a href="{{ url_for("cms_user.cms_user", page=page) }}">{{ page }}</a>
+            </li>
+            {% else %}
+            <li class="active">
+              <span>{{ page }} <a href="{{ url_for("cms_user.cms_user", page=page) }}" class="sr-only">{{ page }}</a></span>
+            </li>
+            {% endif %}
+        {% endfor %}
+        {% if pagination.has_next %}
+        <li>
+          <span>
+            <span aria-hidden="true"><a href="{{ url_for("cms_user.cms_user", page=pagination.page+1) }}">&raquo;</a></span>
+          </span>
+        </li>
+        {% else %}
+        <li class="disabled">
+          <span>
+            <span aria-hidden="true">&raquo;</span>
+          </span>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 重置密码框 -->
+  <div class="modal fade" id="myModal_reset" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">提示</h4>
+        </div>
+        <div class="modal-body">
+          &emsp;&emsp;<span>此操作将重置用户密码为初始密码，是否继续</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary reset_password">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 账户详细信息框 -->
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">账户详情</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">账户</label>
+              <div class="col-sm-8">
+                <label class="form-control user_name">小胡</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">绑定手机</label>
+              <div class="col-sm-3">
+                <label class="form-control user_phone">16546468543</label>
+              </div>
+              <label class="col-sm-2 control-label">绑定邮箱</label>
+              <div class="col-sm-3">
+                <label class="form-control user_email">599663430@qq.com</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">注册时间</label>
+              <div class="col-sm-3">
+                <label class="form-control create_time">2019/09/09</label>
+              </div>
+              <label class="col-sm-2 control-label">账户状态</label>
+              <div class="col-sm-3">
+                <label class="form-control user_active">活跃</label>
+              </div>
+              <div style="text-align:center;" class="col-sm-2">
+                <img class="user_avatar"
+                     style="width:100px;height:100px;border-radius:50%;border:none;margin-top:-100px;"
+                     src="{{ url_for("static", filename="images/admin/avatar.jpg") }}" alt="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">简介</label>
+              <div class="col-sm-10">
+                <textarea class="form-control user_introduce" rows="3">Hello World！你好，世界！</textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 激活/冻结账户提示框 -->
+  <div class="modal fade" id="myModal_freeze" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">提示</h4>
+        </div>
+        <div class="modal-body">
+          &emsp;&emsp;<img src="{{ url_for("static", filename="images/admin/tip.png") }}" alt="">&emsp;
+
+          <span>此操作将激活/冻结该用户，是否继续？</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary active_btn">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script_block %}
+    <script>
+    // 个人设置框的显示和隐藏
+    var count = 1;
+    $(".settings>img:nth-child(2)").on("click", function(){
+      if(count==1){
+        $(".settings>div:last-child").css({"display": "block"});
+        $(this).attr("src", "../static/images/admin/up.png");
+        count = 2
+      }else{
+        $(".settings>div:last-child").css({"display": "none"});
+        $(this).attr("src", "../static/images/admin/down.png");
+        count = 1
+      }
+    });
+    $(".settings>div:last-child").on("click", function(){
+        $(this).css({"display": "none"});
+        $(".settings>img:nth-child(2)").attr("src", "../static/images/admin/down.png");
+        count = 1
+    });
+
+    //激活/冻结按钮功能实现
+    var user_active_id = null;
+    function set_active(user_id) {
+        user_active_id = user_id;
+    }
+    $(".active_btn").on("click", function(){
+        data = {"user_id": user_active_id};
+        $.post("/cms/user/active", data, function () {
+            window.location.reload()
+        })
+    })
+
+    //查看按钮功能实现
+    function check_user(user_id) {
+        data = {"user_id": user_id};
+        $.post("/cms/user/check", data, function(res){
+            $(".user_name").html(res.user_name);
+            $(".user_phone").html(res.user_phone);
+            $(".user_email").html(res.user_email);
+            $(".create_time").html(res.create_time);
+            $(".user_active").html(res.user_active);
+            $(".user_introduce").val(res.user_introduce);
+            $(".user_avatar").attr("src", res.user_avatar);
+        })
+    }
+    var reset_user_id = null;
+    function reset_password(user_id) {
+        reset_user_id = user_id;
+    }
+    $(".reset_password").on("click", function(){
+        data = {"user_id": reset_user_id};
+        $.post("/cms/user/reset", data, function(){
+            window.location.reload()
+        })
+    })
+
+    </script>
+{% endblock %}

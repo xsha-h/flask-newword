@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>前台注册</title>
+	<link rel="stylesheet" href="{{ url_for("static", filename="css/register/register.css") }}">
+	<style>
+		form>.input{
+			width: 80%;
+			height: 40px;
+			font-size: 18px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			margin-top: 10px;
+			padding-left: 25px;
+		}
+		form>div{
+			width: 25%;
+			line-height:40px;
+			height: 40px;
+			text-align: center;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			display: inline-block;
+			margin-left: 5%;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<span>MY WORD</span>
+		</div>
+		<div class="content">
+			<div class="left">
+				<img style="height: 600px;" src="{{ url_for("static", filename="images/register/u179.jpg") }}" alt="图片正在赶来的路上...">
+			</div>
+			<div class="right">
+				<div class="top">
+					<div style="margin-right: 50px;"><a href="{{ url_for(".login_page") }}">登录</a></div>
+					<div class="transform"><a href="">注册</a></div>
+				</div>
+				<div class="center">
+					<form action="" method="POST">
+                        {{ form.csrf_token }}
+                        {{ form.user_name(class="input", placeholder="请输入用户名") }}
+						<br>
+                        {{ form.user_email(class="input", placeholder="联系邮箱") }}
+						<br>
+                        {{ form.user_psd(class="input", placeholder="请输入密码") }}
+						<br>
+                        {{ form.again_psd(class="input", placeholder="确认密码") }}
+						<br>
+                        {{ form.check_code(class="input", style="width: 50%;", placeholder="输入验证码") }}
+                        <div>获取验证码</div>
+
+                        {{ form.register_btn(class="input") }}
+					</form>
+				</div>
+				<div class="bottom">
+					<div style="margin-top:0;">
+						<a href="{{ url_for(".login_page") }}" style="color: #0099ff; margin-right: 15%;float: right;margin-top:0;">返回登录</a>
+					</div>
+					<div style="margin-top:50px;">
+						<a href="">帮助</a>
+						<a href="">隐私</a>
+						<a href="">条款</a><br>
+						<span>copyright&copy;呱唧_T_呱唧</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

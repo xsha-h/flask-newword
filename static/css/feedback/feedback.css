@@ -1,0 +1,14 @@
+h4, .feedbackContainer>form{
+	margin-left: 50px;
+	margin-top: 50px;
+}
+.feedbackContainer input{
+	width: 70px;
+	height: 35px;
+	color: white;
+	background-color: #2e6da4;
+	border: none;
+	border-radius: 5px;
+	margin-top: 8px;
+	margin-left: 55%;
+}

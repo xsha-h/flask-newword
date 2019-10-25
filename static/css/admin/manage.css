@@ -1,0 +1,26 @@
+table.table *{
+	text-align: center;
+	line-height: 100%;
+}
+/*用户管理表格的按钮样式控制*/
+.button>button{
+	width: 70px;
+	height: 30px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+.reset{
+	color: black;
+	background-color: white;
+}
+.check{
+	color: white;
+	background-color: #2e6da4;
+}
+.freeze{
+	color: white;
+	background-color: red;
+}
+.freeze:hover{
+	background-color: #2e6da4;
+}

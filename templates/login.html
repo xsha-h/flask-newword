@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>前台登录</title>
+	<link rel="stylesheet" href="{{ url_for("static", filename="css/register/register.css") }}">
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<span>MY WORD</span>
+		</div>
+		<div class="content">
+			<div class="left">
+				<img style="height: 600px;" src="{{ url_for("static", filename="images/register/u179.jpg") }}" alt="图片正在赶来的路上...">
+			</div>
+			<div class="right">
+				<div class="top">
+					<div class="transform" style="margin-right: 50px;"><a href="">登录</a></div>
+					<div><a href="{{ url_for(".register_page") }}">注册</a></div>
+				</div>
+				<div class="center">
+					<form action="{{ url_for(".login_page") }}" method="POST">
+                        {{ form.csrf_token }}
+                        {{ form.user_name(class="input", placeholder="请输入用户名") }}
+{#						<input class="input" type="text" placeholder="请输入用户名">#}
+						<br>
+                        {{ form.user_psd(class="input", placeholder="请输入密码") }}
+{#						<input class="input" type="password" placeholder="请输入密码">#}
+						<br>
+                        {{ form.remember_btn }}
+{#						<input style="margin-top:20px;" type="checkbox">&emsp;<span style="color: #ccc;margin-top:20px;">记住密码</span>#}
+						<span style="float: right; margin-right: 15%;margin-top:20px;"><a href="" style="color: #0099ff;">忘记密码</a></span><br>
+                        {{ form.login_btn(class="input") }}
+{#						<input class="input" type="submit" value="登录">#}
+					</form>
+				</div>
+				<div class="bottom">
+					<div>
+						<p>其他登录方式</p>
+						<img style="margin-left: 20px;" src="{{ url_for("static", filename="images/register/u195.png") }}" alt="">
+						<img src="{{ url_for("static", filename="images/register/u196.png") }}" alt="">
+						<img src="{{ url_for("static", filename="images/register/u197.png") }}" alt="">
+						<p style="color: #0099ff; margin-right: 15%;float: right;"><a style="color:inherit;" href="{{ url_for(".register_page") }}">注册账户</a></p>
+					</div>
+					<div style="margin-top:50px;">
+						<a href="">帮助</a>
+						<a href="">隐私</a>
+						<a href="">条款</a><br>
+						<span>copyright&copy;呱唧_T_呱唧</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

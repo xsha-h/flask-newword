@@ -1,0 +1,151 @@
+/*标签初始样式*/
+*{
+	margin: 0px;
+	padding: 0px;
+}
+html,body{
+	height: 100%;
+	width: 100%;
+}
+ul,li,a,a:hover,a:visited,a:active{
+	list-style: none;
+	text-decoration: none;
+}
+a, a:hover, a:active, a:visited{
+	color: inherit;
+}
+
+/*界面字体的统一样式*/
+.base_font{
+	color: rgba(0,0,0,0.5);
+}
+
+.myContainer{
+	width: 100%;
+	height: 100%;
+	background-color: #f2f2f2;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+
+/*导航栏样式*/
+.myNav{
+	width: 13%;
+	height: 100%;    /*高度设置100%，行不通*/
+	background-color: #202d33;
+}
+.myNav>p{
+	width: 100%;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	font-weight: 900;
+	color: white;
+	background-color: #4b5bad;
+}
+.myNav li{
+	width: 100%;
+	height: 45px;
+	text-align: center;
+	line-height: 45px;
+	color: #b8c7ce;
+	background-color: inherit;
+}
+.myNav li:hover{
+	color: #f2f2f2;
+	background-color: #1e282c;
+}
+.myNav img{
+	width: 15px;
+	height: 15px;
+	margin: auto 10px;
+}
+/*右部区域的样式*/
+.right{
+	width: 87%;
+	height: 100%;
+	background-color: inherit;
+}
+/*右边头部区域*/
+.title{
+	height: 50px;
+	width: 100%;
+	background-color: #5d6dc3;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+.title>.webname{
+	flex: 2;
+}
+.webname>img{
+	float: left;
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 25px;
+	height: 25px;
+}
+.webname>span{
+	float: left;
+	margin-left: 10px;
+	margin-top: 13px;
+	color: white;
+}
+.title>.settings{
+	flex: 3;
+}
+.settings>img{
+	width: 25px;
+	height: 25px;
+	float: left;
+	margin-left: 25px;
+	margin-top: 10px;
+}
+.settings>span{
+	float: left;
+	margin-top: 5px;
+}
+.settings>img:first-child{
+	margin-left: 68%;
+	margin-right: -3px;
+}
+.settings>img:nth-child(4){
+	width: 30px;
+	height: 30px;
+	border: none;
+	border-radius: 50%;
+	margin-right: 5px;
+}
+
+/*用户设置*/
+.user{
+	width: 100px;
+	border-radius: 5px;
+	border: 1px solid rgba(0,0,0,0.5);
+	position: absolute;
+	right: 1%;
+	top: 50px;
+	display: none;
+	float: right;
+	z-index: 100;
+}
+.user li{
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+}
+.user img{
+	width: 15px;
+	height: 15px;
+	margin-right: 5px;
+}
+
+.content{
+	height: 93%;
+	width: 100%;
+}
+.form-group img{
+	width: 20px;
+	height: 20px;
+}

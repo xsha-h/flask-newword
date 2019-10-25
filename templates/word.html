@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% macro img(star=0) %}
+    {% for i in range(star) %}
+        <img src="{{ url_for("static", filename="images/word/heart_selected.png") }}" alt="">
+    {% endfor %}
+    {% for j in range(5-star) %}
+        <img src="{{ url_for("static", filename="images/word/heart.png") }}" alt="">
+    {% endfor %}
+{% endmacro %}
+
+{% block table_block %}
+<div class="wordContainer">
+	<div class="management">
+        <form action="{{ word_page }}" method="get">
+            <select name="group_name" id="group">
+                <option value="所有分组">所有分组</option>
+                <option value="动词词组">动词词组</option>
+                <option value="形容词词组">形容词词组</option>
+                <option value="名词词组">名词词组</option>
+                <option value="副词词组">副词词组</option>
+                <option value="未知词组">未知词组</option>
+            </select>
+            <label for="search">搜索：</label>
+            <input id="search" type="text" name="keyword" placeholder="请输入关键字">
+            <input type="submit" value="查询">
+        </form>
+		<button data-toggle="modal" data-target="#myModal" style="margin-top:35px;">添加</button>
+	</div>
+	<div class="content">
+		<table class="table table-hover">
+      		<tr>
+	        	<th>序号</th>
+	        	<th>英文</th>
+	        	<th>翻译</th>
+	        	<th>介绍</th>
+	        	<th>所属分组</th>
+	            <th>添加时间</th>
+	            <th>星级</th>
+	            <th>操作</th>
+      		</tr>
+            {% for word in words %}
+                <tr>
+                    <td>{{ word.id }}</td>
+                    <td>{{ word.word }}</td>
+                    <td>{{ word.translation }}</td>
+                    <td>{{ word.introduction }}</td>
+                    <td>{{ word.groups.name }}</td>
+                    <td>{{ word.add_time }}</td>
+                    <td>
+                        {{ img(word.star) }}
+                    </td>
+                    <td>
+                        <img  data-toggle="modal" data-target="#myModal_select" onclick="show_info({{ word.id }})" src="{{ url_for("static", filename="images/word/reading.png") }}">
+                        <img class="img_edit" data-toggle="modal" data-target="#myModal" onclick="edit_info({{ word.id }})" src="{{ url_for("static", filename="images/word/edit.png") }}">
+                        <img data-toggle="modal" data-target="#myModal_delete" onclick="delete_word({{ word.id }})" src="{{ url_for("static", filename="images/word/delete.png") }}">
+                    </td>
+                </tr>
+            {% endfor %}
+
+    	</table>
+	</div>
+	<div class="page">
+		<nav aria-label="..." style="float:right; margin-right: 50px;">
+        	<ul class="pagination">
+                {% if pagination.has_prev %}
+                    <li>
+                        <span><a aria-hidden="false" href="{{ url_for("word.word_page", page=pagination.page-1) }}">&laquo;</a></span>
+                    </li>
+                 {% else %}
+                    <li>
+                        <span><a aria-hidden="false" href="#">&laquo;</a></span>
+                    </li>
+                {% endif %}
+                {% for page in pagination.iter_pages(1, 1, 3, 1) %}
+                    {% if page != pagination.page %}
+                         <li>
+                             <a href="{{ url_for("word.word_page", page=page) }}">{{ page }}</a>
+                         </li>
+                    {% else %}
+                        <li class="active">
+	            	        <span>{{ page }} <a class="sr-only" href="{{ url_for("word.word_page", page=page) }}">{{ page }}</a>
+	        	        </li>
+                    {% endif %}
+                {% endfor %}
+	            {% if pagination.has_next %}
+	        	<li>
+	          		<span><a aria-hidden="true" href="{{ url_for("word.word_page", page=pagination.page+1) }}">&raquo;</a></span>
+	        	</li>
+                {% else %}
+                <li>
+	          		<span><a aria-hidden="true" href="#">&raquo;</a></span>
+	        	</li>
+                {% endif %}
+      		</ul>
+    	</nav>
+	</div>
+</div>
+
+<!-- 模态修改框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">单词信息添加/修改</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="word" class="col-sm-2 control-label">单词</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="word" id="word" placeholder="请输入单词">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="meaning" class="col-sm-2 control-label">单词翻译</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="translation" id="meaning" placeholder="请输入单词翻译">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="group" class="col-sm-2 control-label">单词分组</label>
+              <div class="col-sm-10">
+                <select name="group_name" id="group_add" class="form-control">
+                    <option value="动词词组">动词词组</option>
+                    <option value="形容词词组">形容词词组</option>
+                    <option value="副词词组">副词词组</option>
+                    <option value="名词词组">名词词组</option>
+                    <option value="未知词组">未知词组</option>
+                  </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label star">单词星级</label>
+              <div class="col-sm-10">
+                  <input type="text" class="form-control" name="star" id="star" placeholder="请输入单词等级">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="meaning" class="col-sm-2 control-label">单词介绍</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="introduction" id="introduction" placeholder="请输入单词介绍">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="meaning" class="col-sm-2 control-label">单词例句</label>
+              <div class="col-sm-10">
+                <textarea name="words" class="form-control" id="words" rows="3"></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" id="save">保存</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- 单词详细信息框 -->
+<div class="modal fade" id="myModal_select" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">英文单词</label>
+              <div class="col-sm-10">
+                <label class="form-control word_name">hello</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">单词翻译</label>
+              <div class="col-sm-10">
+                <label class="form-control word_translation">你好，哈喽</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">单词分组</label>
+              <div class="col-sm-10">
+                <label class="form-control word_group_name">未知词组</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">单词星级</label>
+              <div class="col-sm-10">
+                  <label class="form-control word_star">1</label>
+                <!--<img src="{{ url_for("static", filename="images/word/heart_selected.png") }}" alt="">
+                <img src="{{ url_for("static", filename="images/word/heart_selected.png") }}" alt="">
+                <img src="{{ url_for("static", filename="images/word/heart_selected.png") }}" alt="">
+                <img src="{{ url_for("static", filename="images/word/heart.png") }}" alt="">
+                <img src="{{ url_for("static", filename="images/word/heart.png") }}" alt="">-->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">例句</label>
+              <div class="col-sm-10">
+                <textarea class="form-control word_words" rows="3">Hello World！你好，世界！</textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- 单词删除警告框 -->
+<div class="modal fade" id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">提示</h4>
+        </div>
+        <div class="modal-body">
+          &emsp;&emsp;<img src="{{ url_for("static", filename="images/word/tip.png") }}" alt="">&emsp;
+          <span>此操作将永久删除该单词，是否删除？</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary delete_word">确定</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script_block %}
+    <script>
+        var update_id = null;
+        var flag = null;
+        $("#save").on("click", function(){
+            data = {
+                "word_id": update_id,
+                "word": $("#word").val(),
+                "translation": $("#meaning").val(),
+                "group_name": $("#group_add").val(),
+                "introduction": $("#introduction").val(),
+                "star": $("#star").val(),
+                "words": $("#words").val()
+            };
+            if(flag){
+                $.post("/word/update", data, function(res){
+                    alert(res);
+                    window.location.reload()
+                })
+            }else{
+                $.post("/word/save", data, function(res){
+                    alert(res);
+                    window.location.reload()
+                })
+            }
+        });
+
+        //单词信息显示
+        function edit_info(word_id){
+            update_id = word_id;
+            flag = 1;
+            data = {"word_id": word_id};
+            $.post("/word/edit_info", data, function(res){
+                $("#word").val(res.word);
+                $("#meaning").val(res.translation);
+                $("#group").val(res.group_name);
+                $("#introduction").val(res.introduction);
+                $("#star").val(res.star);
+                $("#words").val(res.example)
+            })
+        }
+
+        //详细信息框
+        function show_info(word_id){
+            data = {"word_id": word_id};
+            $.post("/word/show_info", data, function(res){
+                $(".word_name").html(res.word);
+                $(".word_translation").html(res.translation);
+                $(".word_group_name").html(res.group_name);
+                $(".word_star").html(res.star);
+                $(".word_words").html(res.example)
+            })
+        }
+
+
+        //单词删除
+        var delete_id = null;
+        function delete_word(word_id){
+            delete_id = word_id
+        }
+        $(".delete_word").on("click", function () {
+            data = {"word_id": delete_id};
+            $.post("/word/delete", data, function(){
+                window.location.reload()
+            })
+        })
+    </script>
+{% endblock %}

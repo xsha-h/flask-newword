@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>用户管理</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ url_for("static", filename="3rd/css/bootstrap.min.css") }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/admin/index.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/admin/manage.css") }}">
+    <script src="{{ url_for("static", filename="js/jquery-3.4.1.min.js") }}"></script>
+{#    <script src="{{ url_for("static", filename="js/admin/index.js") }}"></script>#}
+    <style>
+      .form-group img{
+        width: 20px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+  <script src="{{ url_for("static", filename="3rd/js/jquery-3.4.1.min.js") }}"></script>
+  <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+  <script src="{{ url_for("static", filename="3rd/js/bootstrap.min.js") }}"></script>
+
+    <div class="myContainer">
+    	<!-- <div class="title"></div> -->
+    	<div class="left">
+    		<div class="avatar">
+    			<img src="{{ url_for("static", filename="images/admin/avatar.jpg") }}" alt="">
+    			<label for="">管理员</label>
+    		</div>
+    		<div class="myNav">
+    			<ul>
+                    <a href="{{ url_for("cms_user.cms_user") }}">
+                        <li class="user_page">用户管理</li>
+                    </a>
+                    <a href="{{ url_for("cms_feedback.cms_feedback") }}">
+                        <li class="feedback_page">反馈管理</li>
+                    </a>
+    			</ul>
+    		</div>
+    	</div>
+      <!-- 替换的板块 -->
+      <div class="replaced">
+        {% block table_block %}
+
+        {% endblock %}
+      </div>
+    </div>
+    {% block script_block %}
+
+    {% endblock %}
+  </body>
+</html>

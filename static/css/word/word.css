@@ -1,0 +1,60 @@
+.wordContainer{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.wordContainer>.management{
+	flex: 1;
+	width: 100%;
+	border-bottom: 1px solid rgba(0,0,0,0.5);
+	display: flex;
+	flex-direction: row;
+}
+.wordContainer>.content{
+	flex: 8;
+	width: 100%;
+	padding-top: 5px;
+}
+.wordContainer>.page{
+	flex: 2;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+.management>form>*{
+	height: 35px;
+	margin-left: 20px;
+	margin-top: 5%;
+	font-size: 20px;
+	border-radius: 5px;
+}
+#search{
+	height: 40px; 
+	border: none;
+	padding-left: 10px;
+}
+.management select{
+	width: 130px;
+}
+.management [type=submit], .management>button{
+	width: 90px;
+	margin-right: 20px;
+	border: none;
+	border-radius: 5px;
+	background-color: #2e6da4;
+	color: white;
+	height: 35px;
+}
+
+.content>table img{
+	width: 20px;
+	height: 20px;
+}
+.content>table img:hover{
+	cursor: pointer;
+}
+.content .image>img{
+	margin-right: 15px;
+}

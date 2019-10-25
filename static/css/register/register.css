@@ -1,0 +1,117 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+a{
+	text-decoration: none;
+}
+.container{
+	height: 100%;
+	width: 100%;
+}
+/*标题栏*/
+.header{
+	background-color: #f8f9fb; 
+	width: 100%;
+	height: 50px;
+}
+.header>span{
+	color: #ee9601;
+	font-size: 26px;
+	height: 100%;
+	line-height: 50px;
+	float: right;
+	margin-right: 100px;
+}
+
+/*面板区或者内容区*/
+.content{
+	width: 100%;
+	height: calc(100% - 50px - 50px)
+	margin-top: 50px;
+	background-color: #f8f9fb;
+} 
+.left{
+	width: 60%;
+	height: 100%;
+	float: left;
+	margin-top: 50px;
+	background-color: #f8f9fb;
+}
+.right{
+	width: 40%;
+	height: 100%;
+	margin-top: 50px;
+	float: left;
+	background-color: #f8f9fb;
+}
+.right>.top{
+	width: 80%;
+	height: 80px;
+	margin-top: 20px;
+}
+.top>div{
+	width: 40%;
+	height: 100%;
+	float: left;
+	text-align: center;
+	line-height: 80px;
+	font-size: 20px;
+}
+.transform{
+	border-bottom: 1px solid #0099ff;
+	color: #0099ff;
+}
+.top a{
+	color: inherit;
+}
+.center{
+	width: 80%;
+	height: 300px;
+	margin-left: 10px;
+	margin-top: 25px;
+}
+form>.input{
+	width: 80%;
+	height: 50px;
+	font-size: 18px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	margin-top: 40px;
+	padding-left: 25px;
+}
+form>input:last-child{
+	width: 85%;
+	color: white;
+	padding-left: 0px;
+	background-color: #0099ff;
+	margin-left: 0px;
+}
+.bottom{
+	width: 80%;
+	height: 300px;
+	margin-left: 10px;
+	margin-top: 25px;
+}
+.bottom>div{
+	width: 100%;
+	margin-top: 20px;
+	float: left;
+}
+.bottom p{
+	height: 30px;
+	line-height: 30px;
+	float: left;
+	margin-top: 20px;
+}
+.bottom img{
+	width: 30px;
+	height: 30px;
+	margin-right: 20px;
+	margin-top: 20px;
+	float: left;
+}
+.bottom>div:last-child, .bottom>div>a{
+	text-align: center;
+	color: #ccc;
+}

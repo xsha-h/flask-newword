@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block table_block %}
+<div class="groupContainer">
+	<div class="management">
+        <form action="{{ group_page }}" method="get">
+			<select name="group_name" id="">
+				<option value="所有分组">所有分组</option>
+				<option value="动词词组">动词词组</option>
+				<option value="形容词词组">形容词词组</option>
+				<option value="名词词组">名词词组</option>
+                <option value="副词词组">副词词组</option>
+				<option value="未知词组">未知词组</option>
+			</select>
+			<label for="search">搜索：</label>
+			<input id="search" name="keyword" type="text" placeholder="请输入关键字" disabled>
+			<input type="submit" value="查询">
+        </form>
+		<button data-toggle="modal" data-target="#myModal" style="margin-top:35px;">添加</button>
+	</div>
+	<div class="content">
+		<table class="table table-hover">
+            <tr>
+                <th>序号</th>
+                <th>分组名称</th>
+                <th>单词总数</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.id }}</td>
+                    <td>{{ group.name }}</td>
+                    <td>{{ group.words | length }}</td>
+                    <td>{{ group.add_time }}</td>
+                    <td class="image">
+						<img  data-toggle="modal" data-target="#myModal_select" onclick="show_info({{ group.id }})" src="{{ url_for("static", filename="images/word/reading.png") }}">
+						<img class="img_edit" data-toggle="modal" onclick="edit_info({{ group.id }})" data-target="#myModal" src="{{ url_for("static", filename="images/word/edit.png") }}">
+						<img data-toggle="modal" data-target="#myModal_delete" onclick="delete_group({{ group.id }})" src="{{ url_for("static", filename="images/word/delete.png") }}">
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+	</div>
+	<div class="page">
+		<nav aria-label="..." style="float:right; margin-right: 50px;">
+        	<ul class="pagination">
+                {% if pagination.has_prev %}
+                    <li>
+                        <span><a href="{{ url_for("group.group_page", page=pagination.page-1) }}" aria-hidden="true">&laquo;</a></span>
+                    </li>
+                {% else %}
+                    <li class="disabled">
+                        <span><a href="#" aria-hidden="true">&laquo;</a></span>
+                    </li>
+                {% endif %}
+
+                {% for page in pagination.iter_pages(1, 1, 3, 1) %}
+                    {% if page != pagination.page %}
+                        <li>
+	            	        <a href="{{ url_for("group.group_page", page=page) }}" class="sr-only">{{ page }}</a>
+	        	        </li>
+                    {% else %}
+                        <li class="active">
+	            	        <span>{{ page }}<a href="{{ url_for("group.group_page", page=page) }}" class="sr-only">{{ page }}</a></span>
+	        	        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if pagination.has_next %}
+                    <li>
+                        <span><a href="{{ url_for("group.group_page", page=pagination.page+1) }}" aria-hidden="true">&raquo;</a></span>
+                    </li>
+                {% else %}
+                    <li>
+                        <span><a href="#" aria-hidden="true">&raquo;</a></span>
+                    </li>
+                {% endif %}
+      		</ul>
+        </nav>
+	</div>
+</div>
+
+<!-- 模态修改框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" aria-hidden="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">分组信息添加/修改</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="word" class="col-sm-2 control-label">分组名称</label>
+            <div class="col-sm-10">
+              <input type="text" name="group_name" class="form-control" id="group_name" placeholder="请输入分组名称" value="">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="save">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 分组详细信息框 -->
+<div class="modal fade" id="myModal_select" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">分组名称</label>
+            <div class="col-sm-10">
+              <label class="form-control group_name">形容词</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">单词总数</label>
+            <div class="col-sm-10">
+              <label class="form-control group_word_count">200</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">添加时间</label>
+            <div class="col-sm-10">
+              <label class="form-control group_add_time">2019-09-15</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 单词删除警告框 -->
+<div class="modal fade" id="myModal_delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+        &emsp;&emsp;<img src="{{ url_for("static", filename="images/group/tip.png") }}" alt="">&emsp;
+        <span>此操作将永久删除该分组，是否删除？</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary delete_group">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block script_block %}
+<script>
+    var update_id = null;
+    var flag = null;
+    $("#save").on("click", function(){
+        data = {"group_name": $("#group_name").val(), "group_id": update_id};
+        if(flag){
+            $.post("/group/update", data, function(res){
+                alert(res);
+                window.location.reload()
+            })
+        }else{
+            console.log("ddddd")
+             $.post("/group/save", data, function(res){
+                alert(res);
+                window.location.reload()
+            })
+        }
+    });
+
+    //分组信息显示
+   function edit_info(group_id) {
+       flag = 1;
+       update_id = group_id;
+       data = {"group_id": group_id};
+       $.post("/group/edit_info", data, function(res){
+           $("#group_name").val(res.name)
+       })
+    }
+
+   //分组详细信息框
+   function show_info(group_id) {
+       data = {"group_id": group_id}
+       $.post("/group/show_info", data, function(res){
+           $(".group_name").html(res.name);
+           $(".group_word_count").html(res.word_count);
+           $(".group_add_time").html(res.add_time)
+       })
+   }
+
+    //分组信息删除
+   var delete_id = null;
+   function delete_group(group_id){
+       delete_id = group_id;
+   }
+   $(".delete_group").on("click", function(){
+       data = {"group_id": delete_id};
+       $.post("/group/delete", data, function(res){
+           alert(res);
+           window.location.reload()
+       })
+   })
+</script>
+{% endblock %}

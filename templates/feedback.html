@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block table_block %}
+<div class="feedbackContainer">
+    <h4>您对系统由任何意见，可通过填写以下内容发送给作者。</h4>
+    <form style="margin:50px 0px 0px 80px;" action="{{ url_for("feedback.send_feedback") }}" method="post">
+        <textarea name="content" id="" cols="100" rows="10" placeholder="这个人很懒，什么都没留下..."></textarea>
+        <br>
+        <input type="submit" value="发送">
+    </form>
+</div>
+{% endblock %}

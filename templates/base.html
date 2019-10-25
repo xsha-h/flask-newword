@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>个人单词管理网站</title>
+	<!-- Bootstrap -->
+  <link href="{{ url_for("static", filename="3rd/css/bootstrap.min.css") }}" rel="stylesheet">
+
+	<link rel="stylesheet" href="{{ url_for("static", filename="css/index.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/word/word.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/group/group.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/personal/personal.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/feedback/feedback.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/about/about.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/main/main.css") }}">
+
+
+	<script src="{{ url_for("static", filename="js/jquery-3.4.1.min.js") }}"></script>
+	<script src="{{ url_for("static", filename="js/index.js") }}"></script>
+{#    <script src="{{ url_for("static", filename="js/main/main.js") }}"></script>#}
+{#    <script src="{{ url_for("static", filename="js/word/word.js") }}"></script>#}
+{#    <script src="{{ url_for("static", filename="js/group/group.js") }}"></script>#}
+{#    <script src="{{ url_for("static", filename="js/personal/personal.js") }}"></script>#}
+
+      <!-- 引入 highCharts 文件 -->
+    <script src="{{ url_for("static", filename="code/highcharts.js") }}"></script>
+    <script src="{{ url_for("static", filename="code/highcharts-more.js") }}"></script>
+    <script src="{{ url_for("static", filename="code/modules/exporting.js") }}"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+
+
+
+</head>
+<body>
+
+	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+  <script src="{{ url_for("static", filename="3rd/js/jquery-3.4.1.min.js") }}"></script>
+  <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+  <script src="{{ url_for("static", filename="3rd/js/bootstrap.min.js") }}"></script>
+
+	<div class="myContainer">
+		<div class="myNav">
+			<p>MYWORD</p>
+			<ul>
+                <li class="Index">
+					<img src="{{ url_for("static", filename="images/main.png") }}" alt="">
+                    <a href="{{ url_for("index_page") }}">主&emsp;&emsp;页</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+				<li class="Word">
+					<img style="width: 30px; height:30px; margin-left:0;margin-right:5px;" src="{{ url_for("static", filename="images/word.png") }}" alt="">
+                    <a href="{{ url_for("word.word_page") }}">单词管理</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+				<li class="Group">
+					<img src="{{ url_for("static", filename="images/group.png") }}" alt="">
+                    <a href="{{ url_for("group.group_page") }}">分组管理</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+				<li class="Personal">
+					<img src="{{ url_for("static", filename="images/personal.png") }}" alt="">
+                    <a href="{{ url_for("myinfo.myinfo_page") }}">个人中心</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+				<li class="Feedback">
+					<img src="{{ url_for("static", filename="images/feedback.png") }}" alt="">
+                    <a href="{{ url_for("feedback.feedback_page") }}">反馈管理</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+				<li class="About">
+					<img src="{{ url_for("static", filename="images/about.png") }}" alt="">
+                    <a href="{{ url_for("about.about_page") }}">关于我们</a>
+                    <img src="{{ url_for("static", filename="images/down.png") }}" alt="">
+				</li>
+			</ul>
+		</div>
+		<div class="right">
+			<div class="title">
+				<div class="webname">
+					<img src="{{ url_for("static", filename="images/nav.png") }}" alt="三斜杠图片">
+					<span>个人单词管理平台</span>
+				</div>
+				<div class="settings">
+					<img src="{{ url_for("static", filename="images/info.png") }}" alt="消息铃铛">
+					<span style="background-color:red;" class="badge">5</span>
+					<img src="{{ url_for("static", filename="images/title_main.png") }}" alt="跳转到首页">
+                    {% if avatar() == "没有头像" %}
+					<img src="{{ url_for("static", filename="images/avatar.jpg") }}" alt="avatar">
+                    {% else %}
+                    <img src="{{ url_for("static", filename="media/"+avatar()) }}" alt="avatar">
+                    {% endif %}
+                    {% if username() == "请登录" %}
+					<span style="color:white;margin-top:15px;">请登录</span>
+                    {% else %}
+                    <span style="color:white;margin-top:15px;">{{ username() }}</span>
+                    {% endif %}
+					<img style="margin-left:5px;" src="{{ url_for("static", filename="images/title_down.png") }}" alt="下拉框">
+
+					<div class="user">
+						<ul>
+                            <a href="{{ url_for("myinfo.myinfo_page") }}"><li><img src="{{ url_for("static", filename="images/title_avatar.png") }}" alt="">个人设置</li></a>
+                            <a href="{{ url_for("myinfo.myinfo_page") }}"><li><img src="{{ url_for("static", filename="images/title_key.png") }}" alt="">密码设置</li></a>
+							<li>
+                                <img src="{{ url_for("static", filename="images/title_exit.png") }}" alt="">
+                                {% if login() == "登录" %}
+                                <a style="color:inherit;background-color:inherit;" href="{{ url_for("reg_or_log.login_page") }}">登&emsp;&emsp;录</a>
+                                {% else %}
+                                <a style="color:inherit;background-color:inherit;" href="{{ url_for("reg_or_log.logout_page") }}">注&emsp;&emsp;销</a>
+                                {% endif %}
+                            </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="content">
+                {% block table_block %}
+
+                {% endblock %}
+			</div>
+		</div>
+	</div>
+    {% block script_block %}
+
+    {% endblock %}
+</body>
+</html>

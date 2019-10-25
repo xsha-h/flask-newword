@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block table_block %}
+<div class="personalContainer">
+    <div class="base">
+        <p>基本设置<img src="{{ url_for("static", filename="images/personal/setting_down.png") }}" alt=""></p>
+        <div class="base_info">
+          <form class="form-horizontal" id="user_info" enctype="multipart/form-data" method="post" action="{{ url_for("myinfo.myinfo_page") }}">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-1 control-label">昵称</label>
+              <div class="col-sm-5">
+                <input type="text" name="user_name" class="form-control" id="inputEmail3" value="{{ user.user_name }}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-1 control-label">电话</label>
+              <div class="col-sm-5">
+                <input type="number" name="user_phone" class="form-control" id="inputName" value="{{ user.user_phone | set_default }}">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-1 control-label">简介</label>
+              <div class="col-sm-5">
+                <textarea name="user_introduce" class="form-control" rows="5">{{ user.user_introduce }}</textarea>
+              </div>
+              <div class="col-sm-4">
+                  {% if user.user_avatar %}
+                      <img src="{{ url_for("static", filename="media/"+user.user_avatar) }}" alt=""><br>
+                  {% else %}
+                      <img src="{{ url_for("static", filename="images/personal/avatar.jpg") }}" alt=""><br>
+                  {% endif %}
+                <!-- 需要添加点击事件，还要驱动文件按钮 -->
+                <input name="avatar_file" type="file">
+                <input type="submit" value="上传头像" id="image">
+                <img src="{{ url_for("static", filename="images/personal/upload.png") }}" alt="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputName" class="col-sm-1 control-label"></label>
+              <div class="col-sm-5">
+                  <input type="submit" value="保存" class="submit">
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
+    <div class="secure">
+        <p>安全设置<img src="{{ url_for("static", filename="images/personal/setting_down.png") }}" alt=""></p>
+        <div class="secure_info">
+          <div>
+            <p class="base1">账户密码</p>
+            <span class="base2">当前密码强度：</span>
+            <span style="color: #52c41a; font-size:17px;">{{ rank }}</span>
+            <span class="base3" data-toggle="modal" data-target="#myModal_password">修改</span>
+          </div>
+          <div>
+            <p class="base1">绑定邮箱</p>
+            <span class="base2">已绑定邮箱：</span>
+            <span class="base2">{{ user.user_email | email_filter }}</span>
+            <span class="base3" data-toggle="modal" data-target="#myModal_email">修改</span>
+          </div>
+        </div>
+    </div>
+    <div class="inform">
+        <p>新消息通知<img src="{{ url_for("static", filename="images/personal/setting_down.png") }}" alt=""></p>
+        <div class="inform_info">
+          <div>
+            <p class="base1">消息通知</p>
+            <span class="base2">其他用户的消息将以邮件的形式通知</span>
+              <input type="text" class="recv" value="{{ user.user_recv }}" hidden="hidden">
+              {% if user.user_recv %}
+                <img style="float:right; margin-right:10%;width:45px;" src="{{ url_for("static", filename="images/personal/on.png") }}">
+              {% else %}
+                <img style="float:right; margin-right:10%;width:45px;" src="{{ url_for("static", filename="images/personal/off.png") }}">
+              {% endif %}
+
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- 密码修改框 -->
+<div class="modal fade" id="myModal_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">密码修改</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ url_for("myinfo.set_password") }}" method="post">
+            <div class="form-group">
+              <label for="exampleInputPsd1">输入新密码</label>
+              <input type="password" name="user_psd" class="form-control" id="exampleInputPsd1">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">再次输入新密码</label>
+              <input type="password" name="again_psd" class="form-control" id="exampleInputPassword1">
+                <input type="submit" hidden="hidden" class="psd_submit">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button type="button" class="btn btn-primary" onclick="psd_submit()">保存</button>
+        </div>
+      </div>
+    </div>
+</div>
+  <!-- 邮箱修改框 -->
+<div class="modal fade" id="myModal_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      <h4 class="modal-title" id="myModalLabel">更换邮箱</h4>
+	    </div>
+	    <div class="modal-body">
+	      <form action="{{ url_for("myinfo.set_email") }}" method="post">
+	        <div class="form-group">
+	          <label for="exampleInputEmail1">绑定新邮箱</label>
+	          <input type="email" name="user_email" class="form-control" id="exampleInputEmail1">
+                <input type="submit" hidden="hidden" class="email_submit">
+	        </div>
+	      </form>
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      <button type="button" class="btn btn-primary" onclick="email_submit()">保存</button>
+	    </div>
+	  </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script_block %}
+<script>
+    // 消息通知的切换
+
+    $(".inform_info img").on("click", function(){
+      var count1 = $(".recv").val();
+      if(+count1==0){
+        var data = {"user_recv": 1};
+        $.post("/myinfo/set_recv", data, function (res) {
+            alert(res);
+            $(".inform_info img").attr("src", "/static/images/personal/on.png");
+            $(".recv").val(1)
+            //window.location.reload()
+        })
+      }else{
+        var data = {"user_recv": 0};
+        $.post("/myinfo/set_recv", data, function (res) {
+            alert(res);
+            $(".inform_info img").attr("src", "/static/images/personal/off.png");
+            $(".recv").val(0)
+            //window.location.reload()
+        })
+      }
+    });
+
+    //基本设置面板的显示和隐藏
+    var count2 = 1;
+    $(".base>p>img").on("click", function(){
+      if(count2 == 1){
+        $(this).attr("src", "/static/images/personal/setting_up.png");
+        $(".base_info").slideDown(1000);
+        count2 = 2
+      }else{
+        $(this).attr("src", "/static/images/personal/setting_down.png");
+        $(".base_info").slideUp(1000);
+        count2 = 1
+      }
+    });
+
+    //安全设置面板的显示和隐藏
+    var count3 = 1;
+    $(".secure>p>img").on("click", function(){
+      if(count3 == 1){
+        $(this).attr("src", "/static/images/personal/setting_up.png");
+        $(".secure_info").slideDown(1000);
+        count3 = 2
+      }else{
+        $(this).attr("src", "/static/images/personal/setting_down.png");
+        $(".secure_info").slideUp(1000);
+        count3 = 1
+      }
+    });
+
+    //消息通知设置面板的显示和隐藏
+    var count4 = 1;
+    $(".inform>p>img").on("click", function(){
+      if(count4 == 1){
+        $(this).attr("src", "/static/images/personal/setting_up.png");
+        $(".inform_info").slideDown(1000);
+        count4 = 2
+      }else{
+        $(this).attr("src", "/static/images/personal/setting_down.png");
+        $(".inform_info").slideUp(1000);
+        count4 = 1
+      }
+    });
+
+    //消除上传头像按钮的默认提交表单的事件
+    $("#image").on("click", function(e){
+        e.preventDefault()
+        $("[type=file]").trigger("click");
+    })
+
+    //密码修改保存按钮
+    function psd_submit() {
+        $(".psd_submit").trigger("click");
+    }
+
+    //邮箱修改保存按钮
+    function email_submit() {
+        $(".email_submit").trigger("click")
+    }
+</script>
+{% endblock %}
