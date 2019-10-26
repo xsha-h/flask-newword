@@ -32,20 +32,20 @@
 
 单词管理界面：
 
-![1572113192463](https://github.com/hxs599663430/flask-newword/tree/master/static/readme_images/1572113192463.png)
+![1572113192463](./static/readme_images/1572113192463.png)
 
 分组管理界面：
 
-![1572113244694](https://github.com/hxs599663430/flask-newword/tree/master/static/readme_images/1572113244694.png)
+![1572113244694](./static/readme_images/1572113244694.png)
 
 个人中心界面：
 
-![1572113281165](https://github.com/hxs599663430/flask-newword/tree/master/static/readme_images/1572113281165.png)
+![1572113281165](./static/readme_images/1572113281165.png)
 
 反馈管理界面：
 
-![1572113320935](https://github.com/hxs599663430/flask-newword/tree/master/static/readme_images/1572113320935.png)
+![1572113320935](./static/readme_images/1572113320935.png)
 
 关于我们界面：
 
-![1572113346222](https://github.com/hxs599663430/flask-newword/tree/master/static/readme_images/1572113346222.png)
+![1572113346222](./static/readme_images/1572113346222.png)
